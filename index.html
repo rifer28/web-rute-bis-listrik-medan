@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<style>
+
+#sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    overflow-y: auto;
+}
+
+#sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#jalur-list {
+    list-style: none;
+    padding: 0;
+}
+
+#jalur-list li {
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#jalur-list li:hover {
+    background: rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+</style>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Transportasi Umum Medan</title>
+    
+    <!-- Tambahkan Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <style>
+        /* Gaya untuk sidebar */
+        #sidebar {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        /* Peta full layar */
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar untuk memilih jalur -->
+     <div id="sidebar">
+    <h2>🚍 Jalur Bus Listrik</h2>
+    <ul id="jalur-list">
+        <li onclick="tampilkanJalur(1)" style="border-left: 5px solid blue;">Jalur 1</li>
+        <li onclick="tampilkanJalur(2)" style="border-left: 5px solid red;">Jalur 2</li>
+        <li onclick="tampilkanJalur(3)" style="border-left: 5px solid green;">Jalur 3</li>
+        <li onclick="tampilkanJalur(4)" style="border-left: 5px solid yellow;">Jalur 4</li>
+        <li onclick="tampilkanJalur(5)" style="border-left: 5px solid purple;">Jalur 5</li>
+    </ul>
+    <hr>
+    <button onclick="tampilkanJalurTerdekat()">📍 Jalur Terdekat</button>
+    <button onclick="tampilkanRuteKeHalte()">🛣 Rute ke Halte</button>
+    <button onclick="tampilkanSemua()">Tampilkan Semua Jalur</button>
+    <button onclick="tampilkanRuteKeHalte()">Rute ke Halte</button>
+
+
+        
+
+
+<button onclick="sembunyikanSemua()">Sembunyikan Semua Jalur</button>
+
+<div id="infoJalur">
+    <hr>
+<input type="text" id="searchBox" placeholder="Cari lokasi..." />
+<button onclick="cariLokasi()">Cari</button>
+
+    <h4>Informasi Jalur:</h4>
+    <p id="detailJalur">Pilih jalur untuk melihat informasi</p>
+</div>
+
+        <h3>Pilih Jalur Bus Listrik</h3>
+        <label><input type="checkbox" id="jalur1" checked> Jalur 1 (Biru)</label><br>
+        <label><input type="checkbox" id="jalur2" checked> Jalur 2 (Merah)</label><br>
+        <label><input type="checkbox" id="jalur3" checked> Jalur 3 (Hijau)</label><br>
+        <label><input type="checkbox" id="jalur4" checked> Jalur 4 (Kuning)</label><br>
+        <label><input type="checkbox" id="jalur5" checked> Jalur 5 (Ungu)</label><br>
+    </div>
+    <hr>
+<div id="legend">
+    
+    <h4>Keterangan Jalur:</h4>
+    <div><span class="color-box" style="background: blue;"></span> Jalur 1 (Biru)</div>
+    <div><span class="color-box" style="background: red;"></span> Jalur 2 (Merah)</div>
+    <div><span class="color-box" style="background: green;"></span> Jalur 3 (Hijau)</div>
+    <div><span class="color-box" style="background: yellow;"></span> Jalur 4 (Kuning)</div>
+    <div><span class="color-box" style="background: purple;"></span> Jalur 5 (Ungu)</div>
+</div>
+
+
+
+
+    <!-- Elemen untuk Peta -->
+    <div id="map"></div>
+
+    <!-- Tambahkan Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Hubungkan ke file JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
