@@ -78,37 +78,71 @@ button:hover {
             width: 100%;
             height: 100vh;
         }
+        /* Tombol Toggle */
+#toggleSidebar {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 1001;
+    border-radius: 5px;
+}
+
+/* Sidebar */
+#sidebar {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 250px;
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: left 0.3s ease-in-out;
+}
+
+/* Saat sidebar disembunyikan */
+#sidebar.hidden {
+    left: -260px;
+}
+
+
     </style>
 </head>
 <body>
+    <!-- Tombol untuk membuka/tutup sidebar -->
+<button id="toggleSidebar">☰</button>
+
+
+
 
     <!-- Sidebar untuk memilih jalur -->
      <div id="sidebar">
     <h2>🚍 Jalur Bus Listrik</h2>
     <ul id="jalur-list">
-        <li onclick="tampilkanJalur(1)" style="border-left: 5px solid blue;">Jalur 1</li>
-        <li onclick="tampilkanJalur(2)" style="border-left: 5px solid red;">Jalur 2</li>
-        <li onclick="tampilkanJalur(3)" style="border-left: 5px solid green;">Jalur 3</li>
-        <li onclick="tampilkanJalur(4)" style="border-left: 5px solid yellow;">Jalur 4</li>
-        <li onclick="tampilkanJalur(5)" style="border-left: 5px solid purple;">Jalur 5</li>
+        <li onclick="tampilkanJalur(1)" style="border-left: 50px solid blue;">Koridor 1</li>
+        <li onclick="tampilkanJalur(2)" style="border-left: 50px solid red;">Koridor 2</li>
+        <li onclick="tampilkanJalur(3)" style="border-left: 50px solid green;">Koridor 3</li>
+        <li onclick="tampilkanJalur(4)" style="border-left: 50px solid yellow;">Koridor 4</li>
+        <li onclick="tampilkanJalur(5)" style="border-left: 50px solid purple;">Koridor 5</li>
+
     </ul>
     <hr>
+    <button id="lokasiSaya">📍 Lihat Lokasi Saya</button>
     <button onclick="tampilkanJalurTerdekat()">📍 Jalur Terdekat</button>
     <button onclick="tampilkanRuteKeHalte()">🛣 Rute ke Halte</button>
     <button onclick="tampilkanSemua()">Tampilkan Semua Jalur</button>
-    <button onclick="tampilkanRuteKeHalte()">Rute ke Halte</button>
+    <button onclick="sembunyikanSemua()">Sembunyikan Semua Jalur</button>
 
-
-        
-
-
-<button onclick="sembunyikanSemua()">Sembunyikan Semua Jalur</button>
 
 <div id="infoJalur">
     <hr>
-<input type="text" id="searchBox" placeholder="Cari lokasi..." />
-<button onclick="cariLokasi()">Cari</button>
-
     <h4>Informasi Jalur:</h4>
     <p id="detailJalur">Pilih jalur untuk melihat informasi</p>
 </div>
@@ -124,11 +158,11 @@ button:hover {
 <div id="legend">
     
     <h4>Keterangan Jalur:</h4>
-    <div><span class="color-box" style="background: blue;"></span> Jalur 1 (Biru)</div>
-    <div><span class="color-box" style="background: red;"></span> Jalur 2 (Merah)</div>
-    <div><span class="color-box" style="background: green;"></span> Jalur 3 (Hijau)</div>
-    <div><span class="color-box" style="background: yellow;"></span> Jalur 4 (Kuning)</div>
-    <div><span class="color-box" style="background: purple;"></span> Jalur 5 (Ungu)</div>
+    <div><span class="color-box" style="background: blue;"></span> Koridor 1  Amplas - Pinang Baris</div>
+    <div><span class="color-box" style="background: red;"></span> Koridor 2 J City - Plaza Medan Fair</div>
+    <div><span class="color-box" style="background: green;"></span> Koridor 3 Belawan - Lapangan Merdeka</div>
+    <div><span class="color-box" style="background: yellow;"></span> Koridor 4 Pasar Induk - Lapangan Merdeka</div>
+    <div><span class="color-box" style="background: purple;"></span> Koridor 5 Tembung - Lapangan Merdeka</div>
 </div>
 
 
@@ -136,6 +170,13 @@ button:hover {
 
     <!-- Elemen untuk Peta -->
     <div id="map"></div>
+
+    <!-- Panel informasi jalur di kanan -->
+<div id="infoJalur">
+    <h3>ℹ️ Informasi Jalur</h3>
+    <p id="detailJalur">Pilih jalur untuk melihat informasi</p>
+</div>
+
 
     <!-- Tambahkan Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
