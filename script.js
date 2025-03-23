@@ -286,19 +286,19 @@ function toggleJalur(checkbox, jalur, halte, info) {
 
 // Event listener untuk checkbox
 document.getElementById("jalur1").addEventListener("change", function() {
-    toggleJalur(this, jalurBus1, halteBus1, "🟦 Jalur 1 (Biru) - Lapangan Merdeka → Pajus");
+    toggleJalur(this, jalurBus1, halteBus1, "🟦 Koridor 1 (Biru) - Amplas → Lap. Merdeka → Pinang Baris ");
 });
 document.getElementById("jalur2").addEventListener("change", function() {
-    toggleJalur(this, jalurBus2, halteBus2, "🟥 Jalur 2 (Merah) - Lapangan Merdeka → Terminal");
+    toggleJalur(this, jalurBus2, halteBus2, "🟥 Koridor 2 (Merah) - J City → Lap. Merdeka → Plaza Medan Fair");
 });
 document.getElementById("jalur3").addEventListener("change", function() {
-    toggleJalur(this, jalurBus3, halteBus3, "🟩 Jalur 3 (Hijau) - Lapangan Merdeka → Gatsu");
+    toggleJalur(this, jalurBus3, halteBus3, "🟩 Koridor 3 (Hijau) - Belawan → Lap. Merdeka");
 });
 document.getElementById("jalur4").addEventListener("change", function() {
-    toggleJalur(this, jalurBus4, halteBus4, "🟨 Jalur 4 (Kuning) - Lapangan Merdeka → Ringroad");
+    toggleJalur(this, jalurBus4, halteBus4, "🟨 Koridor 4 (Kuning) - Pasar Induk → Lap. Merdeka");
 });
 document.getElementById("jalur5").addEventListener("change", function() {
-    toggleJalur(this, jalurBus5, halteBus5, "🟪 Jalur 5 (Ungu) - Lapangan Merdeka → Amplas");
+    toggleJalur(this, jalurBus5, halteBus5, "🟪 Koridor 5 (Ungu) - Tembung → Lap. Merdeka");
 });
 function cariLokasi() {
     var lokasi = document.getElementById("searchBox").value;
@@ -471,3 +471,131 @@ halteBus2.forEach(h => h.addTo(map));
 halteBus3.forEach(h => h.addTo(map));
 halteBus4.forEach(h => h.addTo(map));
 halteBus5.forEach(h => h.addTo(map));
+
+document.getElementById("toggleSidebar").addEventListener("click", function() {
+    var sidebar = document.getElementById("sidebar");
+    if (sidebar.style.left === "-260px") {
+        sidebar.style.left = "10px"; // Buka sidebar
+    } else {
+        sidebar.style.left = "-260px"; // Sembunyikan sidebar
+    }
+});
+document.getElementById("lokasiSaya").addEventListener("click", function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var userLat = position.coords.latitude;
+            var userLng = position.coords.longitude;
+
+            var userMarker = L.marker([userLat, userLng]).addTo(map)
+                .bindPopup("Lokasi Anda Sekarang").openPopup();
+
+            map.setView([userLat, userLng], 15);
+        }, function() {
+            alert("Gagal mendapatkan lokasi. Pastikan GPS aktif!");
+        });
+    } else {
+        alert("Browser tidak mendukung Geolocation.");
+    }
+});
+function hitungJarak(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius bumi dalam kilometer
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+
+// Objek untuk menyimpan status jalur yang sedang ditampilkan
+var jalurTampil = {
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false
+};
+
+function tampilkanJalur(nomorKoridor) {
+    // Jika jalur sudah tampil, maka sembunyikan
+    if (jalurTampil[nomorKoridor]) {
+        sembunyikanJalur(nomorKoridor);
+        jalurTampil[nomorKoridor] = false;
+    } else {
+        // Sembunyikan semua jalur sebelum menampilkan yang dipilih
+        sembunyikanSemua();
+
+        // Tampilkan jalur berdasarkan nomor koridor
+        switch (nomorKoridor) {
+            case 1:
+                jalurBus1.addTo(map);
+                halteBus1.forEach(h => h.addTo(map));
+                document.getElementById("detailJalur").innerHTML = "🟦 Koridor 1 (Biru) - Amplas → Lap. Merdeka → Pinang Baris";
+                break;
+            case 2:
+                jalurBus2.addTo(map);
+                halteBus2.forEach(h => h.addTo(map));
+                document.getElementById("detailJalur").innerHTML = "🟥 Koridor 2 (Merah) - J City → Lap. Merdeka → Plaza Medan Fair";
+                break;
+            case 3:
+                jalurBus3.addTo(map);
+                halteBus3.forEach(h => h.addTo(map));
+                document.getElementById("detailJalur").innerHTML = "🟩 Koridor 3 (Hijau) - Belawan → Lap. Merdeka";
+                break;
+            case 4:
+                jalurBus4.addTo(map);
+                halteBus4.forEach(h => h.addTo(map));
+                document.getElementById("detailJalur").innerHTML = "🟨 Koridor 4 (Kuning) - Pasar Induk → Lap. Merdeka";
+                break;
+            case 5:
+                jalurBus5.addTo(map);
+                halteBus5.forEach(h => h.addTo(map));
+                document.getElementById("detailJalur").innerHTML = "🟪 Koridor 5 (Ungu) - Tembung → Lap. Merdeka";
+                break;
+            default:
+                alert("Koridor tidak ditemukan!");
+                return;
+        }
+        jalurTampil[nomorKoridor] = true; // Tandai bahwa jalur ini sedang ditampilkan
+    }
+}
+
+function sembunyikanJalur(nomorKoridor) {
+    switch (nomorKoridor) {
+        case 1:
+            if (map.hasLayer(jalurBus1)) {
+                map.removeLayer(jalurBus1);
+                halteBus1.forEach(h => map.removeLayer(h));
+            }
+            break;
+        case 2:
+            if (map.hasLayer(jalurBus2)) {
+                map.removeLayer(jalurBus2);
+                halteBus2.forEach(h => map.removeLayer(h));
+            }
+            break;
+        case 3:
+            if (map.hasLayer(jalurBus3)) {
+                map.removeLayer(jalurBus3);
+                halteBus3.forEach(h => map.removeLayer(h));
+            }
+            break;
+        case 4:
+            if (map.hasLayer(jalurBus4)) {
+                map.removeLayer(jalurBus4);
+                halteBus4.forEach(h => map.removeLayer(h));
+            }
+            break;
+        case 5:
+            if (map.hasLayer(jalurBus5)) {
+                map.removeLayer(jalurBus5);
+                halteBus5.forEach(h => map.removeLayer(h));
+            }
+            break;
+    }
+    document.getElementById("detailJalur").innerHTML = "Pilih jalur untuk melihat informasi";
+}
+
